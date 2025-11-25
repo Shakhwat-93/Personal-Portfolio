@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Shakhwat Hossain Rasel - Web Developer</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js" defer></script>
 
     <script>
@@ -19,7 +18,8 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: { brandGreen: '#C9F34C', brandDark: '#111111' }
+                    colors: { brandGreen: '#C9F34C', brandDark: '#111111' },
+                    screens: { 'xs': '400px' }
                 }
             }
         }
@@ -27,10 +27,15 @@
 
     <style>
         :root{--max-content-width:1200px}
+        
+        /* Smooth Scroll Setup */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Prevent Horizontal Scroll on Mobile */
+        body { overflow-x: hidden; width: 100%; }
 
         /* Animation Classes */
         .char-reveal { display: inline-block; overflow: hidden; vertical-align: top; }
@@ -41,15 +46,30 @@
         .img-reveal { transform: scale(1.18); transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
 
         .spotlight-card { position: relative; overflow: hidden; }
-        .spotlight-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(700px circle at var(--mouse-x) var(--mouse-y), rgba(0,0,0,0.05), transparent 40%);
-            z-index: 1; opacity: 0; transition: opacity 0.45s; pointer-events: none;
+        /* Only enable spotlight hover on devices with a mouse to save mobile battery */
+        @media (hover: hover) {
+            .spotlight-card::before {
+                content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                background: radial-gradient(700px circle at var(--mouse-x) var(--mouse-y), rgba(0,0,0,0.05), transparent 40%);
+                z-index: 1; opacity: 0; transition: opacity 0.45s; pointer-events: none;
+            }
+            .spotlight-card:hover::before { opacity: 1; }
         }
-        .spotlight-card:hover::before { opacity: 1; }
 
-        .carousel-item { width: 260px; height: 350px; position: absolute; opacity: 0.6; transition: opacity 0.25s ease; left: 50%; top: 50%; transform-origin: center center; }
-        @media (min-width: 768px) { .carousel-item { width: 280px; height: 380px; } }
+        /* Responsive Carousel Items */
+        .carousel-item { 
+            width: 220px; /* Smaller for mobile */
+            height: 300px; 
+            position: absolute; opacity: 0.6; 
+            transition: opacity 0.25s ease; 
+            left: 50%; top: 50%; 
+            transform-origin: center center; 
+            border-radius: 1.5rem;
+            background-size: cover;
+        }
+        @media (min-width: 768px) { 
+            .carousel-item { width: 280px; height: 380px; } 
+        }
 
         section, main, footer, nav { opacity: 0; transform: translateY(18px); transition: opacity 0.85s ease, transform 0.85s ease; will-change: opacity, transform; }
         .magnetic-btn:focus { outline: 3px solid rgba(201,243,76,0.18); outline-offset: 3px; }
@@ -58,7 +78,7 @@
         img{ max-width:100%; height:auto; display:block }
 
         /* Mobile Menu CSS */
-        #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
         #mobile-menu.open { transform: translateX(0); }
     </style>
 </head>
@@ -66,7 +86,7 @@
 
     <a href="#main-content" class="sr-only focus:not-sr-only p-2 bg-black text-white">Skip to content</a>
 
-    <nav role="navigation" aria-label="Primary" class="w-full py-3 md:py-6 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center sticky top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-gray-100/50 md:border-none" id="navbar">
+    <nav role="navigation" aria-label="Primary" class="w-full py-3 md:py-6 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center sticky top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-100/50 md:border-none" id="navbar">
         
         <div class="flex items-center gap-2 font-bold text-xl tracking-tight relative z-50">
             <img class="w-24 md:w-32" src="Untitled design.svg" alt="Logo"> 
@@ -87,7 +107,7 @@
             </div>
         </button>
 
-        <button id="mobile-menu-btn" class="md:hidden relative z-50 w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-900 focus:outline-none">
+        <button id="mobile-menu-btn" class="md:hidden relative z-50 w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-900 focus:outline-none active:scale-95 transition-transform">
             <i class="fa-solid fa-bars text-lg"></i>
         </button>
 
@@ -112,7 +132,7 @@
             <div class="lg:col-span-4 flex flex-col gap-4 md:gap-6 order-2 lg:order-1 text-center lg:text-left">
                 <span class="text-base md:text-lg text-gray-600 font-medium fade-in">Hey there, I'm</span>
 
-                <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] split-header">
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] split-header break-words">
                     Shakhwat Hossain <br> Rasel
                 </h1>
 
@@ -130,10 +150,10 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-5 flex justify-center order-1 lg:order-2">
+            <div class="lg:col-span-5 flex justify-center order-1 lg:order-2 w-full">
                 <div class="bg-white p-3 md:p-4 pb-6 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 w-full max-w-sm md:max-w-md parallax-card">
-                    <div class="relative bg-gray-200 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden h-[350px] md:h-[480px] w-full img-reveal-wrapper">
-                        <img src="photo_2025-11-19_22-59-39.jpg" alt="Shakhwat Hossain" class="w-full h-full object-cover object-center grayscale-[20%] contrast-110 img-reveal" loading="lazy"/>
+                    <div class="relative bg-gray-200 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden aspect-[3/4] w-full img-reveal-wrapper">
+                        <img src="photo_2025-11-19_22-59-39.jpg" alt="Shakhwat Hossain" class="w-full h-full object-cover object-center grayscale-[20%] contrast-110 img-reveal" loading="eager"/>
                         <div class="absolute right-3 top-3 flex flex-col gap-2 md:gap-3 pt-2">
                             <a href="https://shakhwat-93.github.io/" class="w-8 h-8 md:w-10 md:h-10 bg-gray-500/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black transition hover:scale-110"><i class="fa-solid fa-globe text-sm"></i></a>
                             <a href="https://www.linkedin.com/in/shakhwat-hossain-rasel-46506628b" class="w-8 h-8 md:w-10 md:h-10 bg-gray-500/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[#0a66c2] transition hover:scale-110"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
@@ -356,7 +376,7 @@
                 <a href="mailto:shakhwat.rasel989@gmail.com">Email Me Now</a>
             </button>
         </div>
-        <div class="relative w-full h-[350px] md:h-[500px] flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing" id="carousel-container" tabindex="0" aria-label="Projects carousel">
+        <div class="relative w-full h-[350px] md:h-[500px] flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing touch-none" id="carousel-container" tabindex="0" aria-label="Projects carousel">
             <div id="perspective-carousel" class="absolute inset-0 flex items-center justify-center transition-transform duration-100 ease-out" style="perspective: 1000px; transform-style: preserve-3d;">
                 <div class="carousel-item relative bg-gray-900 rounded-[2rem] overflow-hidden flex-shrink-0 shadow-2xl"><img src="cost.png" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" loading="lazy"/></div>
                 <div class="carousel-item relative bg-[#C9F34C] rounded-[2rem] overflow-hidden flex-shrink-0 shadow-2xl p-4 flex items-center justify-center"><img src="Screenshot 2025-11-17 003022.png" class="w-full h-full object-contain grayscale hover:grayscale-0 transition duration-500" loading="lazy"/></div>
@@ -391,14 +411,16 @@
 
     <script>
         (function(){
+            // Mobile detection for performance adjustments
+            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(initSmoothAndEffects, 60);
-                initMobileMenu(); // Initialize mobile menu
+                initMobileMenu(); 
             });
 
-            // --- Mobile Menu Logic ---
+            // --- Mobile Menu Logic (Improved) ---
             function initMobileMenu() {
                 const btn = document.getElementById('mobile-menu-btn');
                 const menu = document.getElementById('mobile-menu');
@@ -409,11 +431,10 @@
                     const isOpen = menu.classList.contains('open');
                     if (isOpen) {
                         menu.classList.remove('open');
-                        setTimeout(() => menu.classList.add('hidden'), 400); // wait for anim
                         document.body.style.overflow = '';
+                        setTimeout(() => menu.classList.add('hidden'), 400); 
                     } else {
                         menu.classList.remove('hidden');
-                        // small delay to allow display block to render before transform
                         setTimeout(() => menu.classList.add('open'), 10);
                         document.body.style.overflow = 'hidden';
                     }
@@ -425,15 +446,22 @@
             }
 
             function initSmoothAndEffects() {
-                if (typeof Lenis === 'undefined') {
-                    window.lenis = null;
-                } else if (!prefersReduced) {
-                    const lenisInstance = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+                // --- Lenis Scroll (Optimized for Mobile) ---
+                if (typeof Lenis !== 'undefined' && !prefersReduced) {
+                    const lenisInstance = new Lenis({ 
+                        duration: 1.2, 
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+                        smooth: true,
+                        // Mobile touch settings
+                        touchMultiplier: 2,
+                        infinite: false
+                    });
                     window.lenis = lenisInstance;
                     function raf(time) { lenisInstance.raf(time); requestAnimationFrame(raf); }
                     requestAnimationFrame(raf);
                 }
 
+                // --- GSAP Setup ---
                 try { if (typeof gsap !== 'undefined') gsap.registerPlugin(ScrollTrigger); } catch (e) { }
 
                 if (window.lenis && typeof ScrollTrigger !== 'undefined') {
@@ -449,6 +477,7 @@
                     return;
                 }
 
+                // Text Reveals
                 document.querySelectorAll('.split-header').forEach(el => {
                     const text = el.textContent.trim();
                     el.innerHTML = '';
@@ -469,39 +498,47 @@
                     gsap.utils.toArray('section, main, footer, nav').forEach(el => {
                         gsap.fromTo(el, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: trig ? { trigger: el, start: 'top 92%', toggleActions: 'play none none none' } : null });
                     });
-                    gsap.utils.toArray('.img-reveal').forEach(img => {
-                        gsap.fromTo(img, { scale: 1.18 }, { scale: 1, ease: 'none', scrollTrigger: trig ? { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } : null });
-                    });
+                    
+                    // Only parallax images on non-touch devices to save battery/performance on mobile
+                    if (!isTouch) {
+                        gsap.utils.toArray('.img-reveal').forEach(img => {
+                            gsap.fromTo(img, { scale: 1.18 }, { scale: 1, ease: 'none', scrollTrigger: trig ? { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } : null });
+                        });
+                    } else {
+                         // On mobile, just make sure they are scale 1
+                         gsap.set('.img-reveal', { scale: 1 });
+                    }
+
                     gsap.utils.toArray('.counter').forEach(counter => {
                         const target = parseFloat(counter.getAttribute('data-target')) || 0;
                         gsap.to(counter, { innerHTML: target, duration: Math.min(2.5, Math.max(1.2, target/30)), snap: { innerHTML: 1 }, ease: 'power2.out', scrollTrigger: trig ? { trigger: counter, start: 'top 92%', once: true } : null });
                     });
                 }
 
-                document.querySelectorAll('.magnetic-btn').forEach(btn => {
-                    let moveAnim;
-                    function onMove(e){
-                        const rect = btn.getBoundingClientRect();
-                        const x = e.clientX - rect.left - rect.width/2;
-                        const y = e.clientY - rect.top - rect.height/2;
-                        if (typeof gsap !== 'undefined') gsap.to(btn, { x: x*0.18, y: y*0.18, duration: 0.28, overwrite: true });
-                        else btn.style.transform = `translate(${x*0.18}px, ${y*0.18}px)`;
-                    }
-                    btn.addEventListener('mousemove', onMove, { passive: true });
-                    btn.addEventListener('mouseleave', () => { if (typeof gsap !== 'undefined') gsap.to(btn, { x:0, y:0, duration:0.5, ease: 'elastic.out(1, 0.4)' }); else btn.style.transform = ''; });
-                });
+                // Mouse Move Effects (Disable on Touch for Performance)
+                if(!isTouch) {
+                    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                        btn.addEventListener('mousemove', (e) => {
+                            const rect = btn.getBoundingClientRect();
+                            const x = e.clientX - rect.left - rect.width/2;
+                            const y = e.clientY - rect.top - rect.height/2;
+                            if (typeof gsap !== 'undefined') gsap.to(btn, { x: x*0.18, y: y*0.18, duration: 0.28, overwrite: true });
+                            else btn.style.transform = `translate(${x*0.18}px, ${y*0.18}px)`;
+                        }, { passive: true });
+                        btn.addEventListener('mouseleave', () => { if (typeof gsap !== 'undefined') gsap.to(btn, { x:0, y:0, duration:0.5, ease: 'elastic.out(1, 0.4)' }); else btn.style.transform = ''; });
+                    });
 
-                document.querySelectorAll('.spotlight-card').forEach(card => {
-                    card.addEventListener('mousemove', e => {
-                        const rect = card.getBoundingClientRect();
-                        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-                        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-                    }, { passive: true });
-                });
+                    document.querySelectorAll('.spotlight-card').forEach(card => {
+                        card.addEventListener('mousemove', e => {
+                            const rect = card.getBoundingClientRect();
+                            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                        }, { passive: true });
+                    });
+                }
 
-                // Carousel Logic (Unchanged mainly, just ensure touch works)
+                // --- Carousel Logic (Mobile Touch Optimized) ---
                 const carouselCont = document.getElementById('carousel-container');
-                const carouselWrapper = document.getElementById('perspective-carousel');
                 const items = Array.from(document.querySelectorAll('.carousel-item'));
                 const totalItems = items.length;
                 let currentScroll = 0, targetScroll = 0, isPointerDown = false, lastPointerX = 0, velocity = 0;
@@ -510,13 +547,16 @@
                 function updateCarousel(){
                     currentScroll += (targetScroll - currentScroll) * 0.12;
                     items.forEach((item, index) => {
-                        const spacing = window.innerWidth < 768 ? 260 : 320; // Smaller spacing on mobile
+                        // Adjust spacing based on screen width
+                        const spacing = window.innerWidth < 768 ? 220 : 320; 
                         const offset = (index - centerIndex) * spacing + currentScroll;
                         const absOffset = Math.abs(offset);
                         const scale = Math.max(0.62, 1 - (absOffset / 1400));
                         const opacity = Math.max(0.22, 1 - (absOffset / 1200));
                         const zIndex = Math.round(1000 - absOffset);
-                        const rotateY = Math.max(-50, Math.min(50, -(offset / 1400) * 90));
+                        // Reduce rotation on mobile for cleaner look
+                        const maxRot = window.innerWidth < 768 ? 20 : 50;
+                        const rotateY = Math.max(-maxRot, Math.min(maxRot, -(offset / 1400) * 90));
                         const translateX = offset * 0.78;
                         const translateY = (absOffset / 200) * -18;
                         item.style.transform = `translateX(${translateX}px) translateY(${translateY}px) rotateY(${rotateY}deg) scale(${scale}) translateZ(0)`;
@@ -527,14 +567,40 @@
                 }
                 requestAnimationFrame(updateCarousel);
 
-                function onPointerDown(e){ isPointerDown = true; lastPointerX = e.clientX || (e.touches && e.touches[0].clientX) || 0; carouselCont.classList.add('active'); }
-                function onPointerMove(e){ if(!isPointerDown) return; const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0; const dx = clientX - lastPointerX; lastPointerX = clientX; targetScroll += dx; velocity = dx; }
-                function onPointerUp(){ isPointerDown = false; const decay = setInterval(()=>{ if(Math.abs(velocity) < 0.1){ clearInterval(decay); return; } targetScroll += velocity; velocity *= 0.92; }, 16); carouselCont.classList.remove('active'); }
+                // Handle both Mouse and Touch events explicitly
+                function onPointerDown(e){ 
+                    isPointerDown = true; 
+                    lastPointerX = e.clientX || (e.touches && e.touches[0].clientX) || 0; 
+                    carouselCont.classList.add('active'); 
+                }
+                function onPointerMove(e){ 
+                    if(!isPointerDown) return; 
+                    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0; 
+                    const dx = clientX - lastPointerX; 
+                    lastPointerX = clientX; 
+                    targetScroll += dx * 1.5; // Faster scroll on mobile
+                    velocity = dx; 
+                }
+                function onPointerUp(){ 
+                    isPointerDown = false; 
+                    const decay = setInterval(()=>{ 
+                        if(Math.abs(velocity) < 0.1){ clearInterval(decay); return; } 
+                        targetScroll += velocity; 
+                        velocity *= 0.92; 
+                    }, 16); 
+                    carouselCont.classList.remove('active'); 
+                }
                 function onWheel(e){ targetScroll += -e.deltaY * 0.7; }
 
-                carouselCont.addEventListener('pointerdown', onPointerDown, { passive: true });
-                window.addEventListener('pointermove', onPointerMove, { passive: true });
-                window.addEventListener('pointerup', onPointerUp, { passive: true });
+                carouselCont.addEventListener('mousedown', onPointerDown, { passive: true });
+                carouselCont.addEventListener('touchstart', onPointerDown, { passive: true });
+                
+                window.addEventListener('mousemove', onPointerMove, { passive: true });
+                window.addEventListener('touchmove', onPointerMove, { passive: true });
+                
+                window.addEventListener('mouseup', onPointerUp, { passive: true });
+                window.addEventListener('touchend', onPointerUp, { passive: true });
+                
                 carouselCont.addEventListener('wheel', onWheel, { passive: true });
 
                 let autoDir = 1;
@@ -542,7 +608,6 @@
 
                 document.getElementById('scrollTopBtn').addEventListener('click', ()=>{ if (window.lenis && typeof window.lenis.scrollTo === 'function') window.lenis.scrollTo(0); else window.scrollTo({top:0, behavior:'smooth'}); });
                 document.getElementById('subscribe-btn').addEventListener('click', ()=>{ alert('Email field is read-only. Use the contact link to send email.'); });
-                carouselCont.addEventListener('keydown', (e)=>{ if(e.key === 'ArrowLeft'){ targetScroll += 200; } if(e.key === 'ArrowRight'){ targetScroll -= 200; } });
                 window.lenis = window.lenis || { scrollTo: (val)=> window.scrollTo({ top: val, behavior: 'smooth' }) };
             }
         })();
