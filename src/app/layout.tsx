@@ -1,20 +1,54 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
+import localFont from "next/font/local";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import ProfileSidebar from "@/components/layout/ProfileSidebar";
 import NavigationDock from "@/components/layout/NavigationDock";
 import "@/app/globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  display: "swap",
+const neueMontreal = localFont({
+  src: [
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-LightItalic.otf",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-Italic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-MediumItalic.otf",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/neue-montreal/NeueMontreal-BoldItalic.otf",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-neue-montreal",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +64,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${syne.variable} bg-black text-white selection:bg-white selection:text-black`}
+        className={`${neueMontreal.variable} font-sans bg-black text-white selection:bg-white selection:text-black`}
+        style={{ fontFamily: 'var(--font-neue-montreal)' }}
       >
         <SmoothScroll>
           <div className="flex min-h-screen">
